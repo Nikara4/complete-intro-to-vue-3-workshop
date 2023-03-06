@@ -4,21 +4,38 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Avatar: The Last Airbender</title>
+    <title>Marvel Cinematic Universe</title>
   </head>
   <body>
     <div id="app">
+      <h3>Characters list</h3>
       <p v-if="characterList.length === 0">There are no characters</p>
-      <ul v-else-if="characterList.length % 2 === 0">
-        <li v-for="character in characterList">{{ character.name }}</li>
+      <ul v-else>
+        <li v-for="character in characterList"
+          ><p>{{ character.name }}</p>
+          <button @click="addToFavorite(character)">Add to favorite</button>
+        </li>
       </ul>
-      <p>
-        <span v-for="(character, index) in characterList"
-          >{{ character.name }}{{ index === characterList.length - 1 ? '' : ', '
-          }}
-        </span>
-      </p>
-      <p v-else>There are odd characters!</p>
+
+      <div
+        ><h3>Add new character</h3>
+        <input
+          placeholder="Type character name"
+          v-bind:value="newCharacter"
+          v-on:input="changeCharacterName"
+        />
+        <button @click="addCharacter(event)">Add character</button>
+      </div>
+
+      <h3>Favorites characters list</h3>
+      <p v-if="favoriteCharactersList.length === 0"
+        >No characters were added to favorites</p
+      >
+      <ul v-else>
+        <li v-for="favoriteCharacter in favoriteCharactersList"
+          ><p>{{ favoriteCharacter.name }}</p>
+        </li>
+      </ul>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -27,20 +44,34 @@
         data: () => ({
           characterList: [
             {
-              name: 'Aang'
+              name: 'Iron Man',
             },
             {
-              name: 'Zuko'
+              name: 'Black Widow',
             },
             {
-              name: 'Toph'
+              name: 'Hawkeye',
             },
             {
-              name: 'Katara'
-            }
-          ]
-        })
-      }).mount('#app')
+              name: 'Thor',
+            },
+          ],
+          newCharacter: '',
+          favoriteCharactersList: [],
+        }),
+        methods: {
+          addToFavorite(value) {
+            this.favoriteCharactersList.push(value);
+          },
+          addCharacter() {
+            this.characterList.push({ name: this.newCharacter });
+            console.log(this.characterList)
+          },
+          changeCharacterName(event) {
+            this.newCharacter = event.target.value;
+          },
+        },
+      }).mount('#app');
     </script>
   </body>
 </html>
